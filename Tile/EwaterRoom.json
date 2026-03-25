@@ -1,0 +1,136 @@
+{ "compressionlevel":-1,
+ "height":7,
+ "infinite":false,
+ "layers":[
+        {
+         "data":[476, 477, 477, 477, 477, 477, 478,
+            495, 219, 220, 222, 219, 220, 496,
+            495, 235, 236, 222, 235, 236, 496,
+            495, 222, 222, 222, 222, 222, 496,
+            495, 219, 220, 222, 219, 220, 496,
+            495, 235, 236, 222, 235, 236, 496,
+            492, 493, 493, 3221225695, 493, 493, 494],
+         "height":7,
+         "id":1,
+         "name":"Ground",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":7,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "data":[0, 0, 0, 0, 0, 0, 0,
+            0, 0, 3221225479, 3221225479, 3221225479, 1073741825, 0,
+            0, 2684354567, 0, 0, 0, 1073741825, 0,
+            0, 2684354567, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 1073741825, 0,
+            0, 0, 3221225493, 0, 0, 1073741825, 0,
+            0, 0, 0, 0, 0, 0, 0],
+         "height":7,
+         "id":2,
+         "name":"Collision",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":7,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":3,
+         "name":"TeleportPoints",
+         "objects":[
+                {
+                 "height":19,
+                 "id":1,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"target_map",
+                         "type":"string",
+                         "value":"Ecorridor"
+                        }, 
+                        {
+                         "name":"target_x",
+                         "type":"int",
+                         "value":18
+                        }, 
+                        {
+                         "name":"target_y",
+                         "type":"int",
+                         "value":7
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":19,
+                 "x":102.333333333333,
+                 "y":205.333333333333
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        } 
+       ],
+ "nextlayerid":5,
+ "nextobjectid":2,
+ "orientation":"orthogonal",
+ "properties":[
+        {
+         "name":"map_id",
+         "type":"string",
+         "value":"EwaterRoom"
+        }],
+ "renderorder":"right-down",
+ "tiledversion":"1.11.2",
+ "tileheight":32,
+ "tilesets":[
+        {
+         "columns":8,
+         "firstgid":1,
+         "image":"Picture\/Funiture\/funiture1.png",
+         "imageheight":320,
+         "imagewidth":256,
+         "margin":0,
+         "name":"funiture1",
+         "spacing":0,
+         "tilecount":80,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "columns":16,
+         "firstgid":81,
+         "image":"Picture\/Map\/map6.png",
+         "imageheight":480,
+         "imagewidth":512,
+         "margin":0,
+         "name":"map6",
+         "spacing":0,
+         "tilecount":240,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "columns":16,
+         "firstgid":321,
+         "image":"Picture\/Funiture\/funiture5.png",
+         "imageheight":512,
+         "imagewidth":512,
+         "margin":0,
+         "name":"funiture5",
+         "spacing":0,
+         "tilecount":256,
+         "tileheight":32,
+         "tilewidth":32
+        }],
+ "tilewidth":32,
+ "type":"map",
+ "version":"1.10",
+ "width":7
+}

@@ -1,0 +1,162 @@
+{ "compressionlevel":-1,
+ "height":10,
+ "infinite":false,
+ "layers":[
+        {
+         "data":[424, 424, 424, 424, 424, 424, 424, 424, 424, 424,
+            424, 424, 424, 424, 424, 424, 424, 424, 424, 424,
+            424, 424, 424, 424, 424, 424, 424, 424, 424, 424,
+            424, 424, 424, 424, 424, 424, 424, 424, 424, 424,
+            424, 424, 424, 424, 424, 424, 424, 424, 424, 424,
+            424, 424, 424, 424, 424, 424, 424, 424, 424, 424,
+            424, 424, 424, 424, 424, 424, 424, 424, 424, 424,
+            424, 424, 424, 424, 424, 424, 424, 424, 424, 424,
+            424, 424, 424, 424, 424, 424, 424, 424, 424, 424,
+            424, 424, 424, 424, 424, 424, 424, 424, 424, 424],
+         "height":10,
+         "id":1,
+         "name":"Ground",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":10,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "data":[1610612836, 0, 0, 249, 249, 0, 0, 2684354659, 0, 0,
+            1610612835, 0, 0, 0, 0, 0, 0, 2684354660, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 2684354659, 0, 0,
+            1610612836, 0, 0, 0, 0, 0, 0, 2684354660, 0, 2684354591,
+            1610612835, 0, 0, 0, 0, 0, 0, 0, 0, 1610612873,
+            1610612836, 0, 0, 0, 0, 0, 0, 0, 0, 1610612873,
+            1610612835, 0, 0, 0, 0, 0, 0, 2684354659, 0, 2684354591,
+            0, 0, 0, 0, 0, 0, 0, 2684354660, 0, 0,
+            1610612836, 0, 0, 0, 0, 0, 0, 2684354659, 0, 0,
+            1610612835, 0, 0, 249, 249, 0, 0, 2684354660, 0, 0],
+         "height":10,
+         "id":2,
+         "name":"Funiture",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":10,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "data":[30, 0, 0, 30, 30, 0, 0, 30, 0, 0,
+            30, 0, 0, 0, 0, 0, 0, 30, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 30, 0, 0,
+            30, 0, 0, 0, 0, 0, 0, 30, 0, 30,
+            30, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            30, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            30, 0, 0, 0, 0, 0, 0, 30, 0, 30,
+            0, 0, 0, 0, 0, 0, 0, 30, 0, 0,
+            30, 0, 0, 0, 0, 0, 0, 30, 0, 0,
+            30, 0, 0, 30, 30, 0, 0, 30, 0, 0],
+         "height":10,
+         "id":3,
+         "name":"Collision",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":10,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":4,
+         "name":"TeleportPoints",
+         "objects":[
+                {
+                 "height":41.3333,
+                 "id":1,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"target_map",
+                         "type":"string",
+                         "value":"Ecorridor"
+                        }, 
+                        {
+                         "name":"target_x",
+                         "type":"int",
+                         "value":18
+                        }, 
+                        {
+                         "name":"target_y",
+                         "type":"int",
+                         "value":13
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":14.3333,
+                 "x":302,
+                 "y":140.667
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":5,
+ "nextobjectid":2,
+ "orientation":"orthogonal",
+ "properties":[
+        {
+         "name":"map_id",
+         "type":"string",
+         "value":"EWtoilet"
+        }],
+ "renderorder":"right-down",
+ "tiledversion":"1.11.2",
+ "tileheight":32,
+ "tilesets":[
+        {
+         "columns":8,
+         "firstgid":1,
+         "image":"Picture\/Funiture\/funiture1.png",
+         "imageheight":320,
+         "imagewidth":256,
+         "margin":0,
+         "name":"funiture1",
+         "spacing":0,
+         "tilecount":80,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "columns":16,
+         "firstgid":81,
+         "image":"Picture\/Map\/funiture2.1.png",
+         "imageheight":512,
+         "imagewidth":512,
+         "margin":0,
+         "name":"funiture2.1",
+         "spacing":0,
+         "tilecount":256,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "columns":16,
+         "firstgid":337,
+         "image":"Picture\/Map\/map6.png",
+         "imageheight":480,
+         "imagewidth":512,
+         "margin":0,
+         "name":"map6",
+         "spacing":0,
+         "tilecount":240,
+         "tileheight":32,
+         "tilewidth":32
+        }],
+ "tilewidth":32,
+ "type":"map",
+ "version":"1.10",
+ "width":10
+}
