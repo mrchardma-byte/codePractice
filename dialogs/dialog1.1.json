@@ -1,0 +1,89 @@
+{
+  "scenes": [
+    {
+      "scene_id": "START",
+      "trigger_type": "auto",
+      "trigger_condition": "enter_scene_START",
+      "auto_close": 0,
+      "dialog_flow": [
+     
+        {
+          "role_id": "a",
+          "role_name": "神秘人",
+          "texts": ["你终于来了..."],
+          "next_role": "b",
+          "avatar_config": {
+            "small_avatar": "avatar/hanshao.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": ["avatar/hanshao.png"]
+            }
+          }
+        },
+
+        {
+          "role_id": "b",
+          "role_name": "宿管阿姨",
+          "texts": ["别乱逛！"],
+          "next_role": "c",
+          "avatar_config": {
+            "small_avatar": "avatar/niger.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": ["avatar/hanshao.png", "avatar/niger.png"]
+            }
+          }
+        },
+      
+        {
+          "role_id": "c",
+          "role_name": "旁白",
+          "texts": ["深夜的走廊里..."],
+          "next_role": "d"
+        },
+      
+        {
+          "role_id": "d",
+          "role_name": "无名学生",
+          "texts": ["我什么都没看到！"],
+          "next_role": "",
+          "avatar_config": {
+            "small_avatar": "",
+            "big_layout": {
+              "type": "single",
+              "count": 0,
+              "images": []
+            }
+          }
+        }
+      ]
+    },
+	
+	{
+      "scene_id": "SECOND",
+      "trigger_type": "auto",
+      "trigger_condition": "enter_scene_SECOND",
+      "auto_close": 0,
+      "dialog_flow": [
+     
+        {
+          "role_id": "a",
+          "role_name": "神秘人",
+          "texts": ["这是另一个场景"],
+          "next_role": "",
+          "avatar_config": {
+            "small_avatar": "avatar/hanshao.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": ["avatar/hanshao.png"]
+            }
+          }
+        }
+	   ]
+	}
+	
+  ]
+}

@@ -1,0 +1,116 @@
+﻿{
+  "scenes": [
+    {
+      "scene_id": "Start",
+      "trigger_type": "auto",
+      "trigger_condition": "enter_scene_START",
+      "auto_close": 0,
+     
+      "branch_rules": [],
+  
+      "default_branch_id": "main",
+      "dialog_flow": [
+        {
+          "role_id": "a",
+          "role_name": "神秘人",
+          "texts": ["你看到角落的诅咒娃娃，要拿走吗？"],
+          "next_role": "",
+        
+          "has_choices": true,
+         
+          "choices": [
+            {
+              "text": "拿走娃娃",
+              "target_role": "a1",
+              "record_key": "took_cursed_doll",
+              "record_value": 1
+            },
+            {
+              "text": "不拿娃娃",
+              "target_role": "a2",
+              "record_key": "took_cursed_doll",
+              "record_value": 0
+            }
+          ],
+          "avatar_config": {
+            "small_avatar": "avatar/hanshao.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": ["avatar/hanshao.png"]
+            }
+          },
+		  "background": "white",
+        
+          "branch_id": "main"
+        },
+        {
+          "role_id": "a1",
+          "role_name": "神秘人",
+          "texts": ["你拿起娃娃的瞬间，耳边传来了诡异的低语..."],
+          "next_role": "b",
+          "has_choices": false,
+          "branch_id": "main",
+		  "background":"black"
+        },
+        {
+          "role_id": "a2",
+          "role_name": "神秘人",
+          "texts": ["明智的选择，但这只是暂时的..."],
+          "next_role": "b",
+          "has_choices": false,
+          "branch_id": "main"
+        },
+        {
+          "role_id": "b",
+          "role_name": "宿管阿姨",
+          "texts": ["别乱碰这里的东西！"],
+          "next_role": "",
+          "has_choices": false,
+          "branch_id": "main"
+        }
+      ]
+    },
+    {
+      "scene_id": "SECOND",
+      "trigger_type": "auto",
+      "trigger_condition": "enter_scene_SECOND",
+      "auto_close": 0,
+     
+      "branch_rules": [
+        {
+          "trigger_key": "took_cursed_doll",
+          "trigger_value": 1,
+          "target_branch_id": "doll_taken"
+        },
+        {
+          "trigger_key": "took_cursed_doll",
+          "trigger_value": 0,
+          "target_branch_id": "doll_not_taken"
+        }
+      ],
+      "default_branch_id": "doll_not_taken",
+      "dialog_flow": [
+       
+        {
+          "role_id": "c1",
+          "role_name": "宿管阿姨",
+          "texts": ["你拿了娃娃，柜子里的东西会缠上你！"],
+          "next_role": "",
+          "has_choices": false,
+		  
+          "branch_id": "doll_taken"
+        },
+       
+        {
+          "role_id": "c2",
+          "role_name": "宿管阿姨",
+          "texts": ["没拿娃娃就好，这个柜子你也别开..."],
+          "next_role": "",
+          "has_choices": false,
+          "branch_id": "doll_not_taken"
+        }
+      ]
+    }
+  ]
+}

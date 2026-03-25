@@ -1,0 +1,883 @@
+﻿{
+  "scenes": [
+    {
+      "scene_id": "Eclassroom",
+      "plot_id": "Eclassroom_1",
+      "branch_rules": [],
+      "default_branch_id": "main",
+      "dialog_flow": [
+        {
+          "role_id": "vco1",
+          "role_name": " ",
+          "text": "...",
+          "next_role": "vco2",
+          "background": "black"
+        },
+        {
+          "role_id": "vco2",
+          "role_name": " ",
+          "text": "又开学了.......",
+          "next_role": "vco3",
+          "background": "black"
+        },
+        {
+          "role_id": "vco3",
+          "role_name": " ",
+          "text": "...",
+          "next_role": "hs1",
+          "background": "white"
+        },
+        {
+          "role_id": "hs1",
+          "role_name": "韩少",
+          "text": "妈的，又开学了，亡者癫疯赛才打到2400分",
+          "next_role": "hs2",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs2",
+          "role_name": "韩少",
+          "text": "这几天光顾着打亡者，都没有时间嗨道了，只能雷霆炸精了，唉",
+          "next_role": "hs4",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs4",
+          "role_name": "韩少",
+          "text": "真是他爸爸的雷达的！",
+          "next_role": "gl1",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "gl1",
+          "role_name": "戈利",
+          "text": "韩少你黑眼圈怎么这么重，跟要死了似的",
+          "next_role": "hs5",
+          "avatar_config": {
+            "small_avatar": "avatar/geli.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/geli.png", "avatar/hs.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs5",
+          "role_name": "韩少",
+          "text": "不是的，这两天我一直在打亡者，一天只睡两小时。",
+          "next_role": "hs6",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/geli.png",  "avatar/hs_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs6",
+          "role_name": "韩少",
+          "text": "倒是你，看着虚死了，跟刚嗨道了10发是的。",
+          "next_role": "gl2",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/geli.png", "avatar/hs_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "gl2",
+          "role_name": "戈利",
+          "text": "滚吧，我哪有道10发，才9发而已！",
+          "next_role": "hs7",
+          "avatar_config": {
+            "small_avatar": "avatar/geli.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/geli_L.png", "avatar/hs_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs7",
+          "role_name": "韩少",
+          "text": "666有什么区别。",
+          "next_role": "tm1",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/geli_L.png", "avatar/hs_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "tm1",
+          "role_name": "陶没",
+          "text": "低俗！一开学就在教室论道",
+          "next_role": "gl3",
+          "avatar_config": {
+            "small_avatar": "avatar/tm.png",
+            "big_layout": {
+              "type": "triple",
+              "count": 3,
+              "images": [ "avatar/geli_L.png","avatar/tm.png", "avatar/hs_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "gl3",
+          "role_name": "戈利",
+          "text": "就你清高，迪奥毛",
+          "next_role": "tm2",
+          "avatar_config": {
+            "small_avatar": "avatar/geli.png",
+            "big_layout": {
+              "type": "triple",
+              "count": 3,
+              "images": [ "avatar/geli.png","avatar/tm.png", "avatar/hs_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "tm2",
+          "role_name": "陶没",
+          "text": "我这两天迷上了一部特别好看的漫画解说",
+          "next_role": "tm3",
+          "avatar_config": {
+            "small_avatar": "avatar/taomo.png",
+            "big_layout": {
+              "type": "triple",
+              "count": 3,
+              "images": [ "avatar/geli.png", "avatar/taomo.png", "avatar/hs_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "tm3",
+          "role_name": "陶没",
+          "text": "基本都没干别的事，就连睡觉都基本没睡。",
+          "next_role": "m1",
+          "avatar_config": {
+            "small_avatar": "avatar/taomo.png",
+            "big_layout": {
+              "type": "triple",
+              "count": 3,
+              "images": [ "avatar/geli.png", "avatar/taomo.png", "avatar/hs_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "m1",
+          "role_name": "帅马",
+          "text": "无敌了，准备化学课睡觉被J南调教是吧",
+          "next_role": "tm4",
+          "avatar_config": {
+            "small_avatar": "avatar/smart_R.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/smart_L.png", "avatar/tm.png"]
+            }
+          }
+        },
+        {
+          "role_id": "tm4",
+          "role_name": "陶没",
+          "text": "(贱样&&张轩式求偶舞)求她，求她",
+          "next_role": "m2",
+          "avatar_config": {
+            "small_avatar": "avatar/taomo.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/smart_L.png", "avatar/taomo.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "m2",
+          "role_name": "帅马",
+          "text": "666不愧是M之王M王，无限掌握M之力",
+          "next_role": "gl4",
+          "avatar_config": {
+            "small_avatar": "avatar/smart_R.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/smart_L.png", "avatar/taomo.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "gl4",
+          "role_name": "戈利",
+          "text": "你暑假都干嘛了",
+          "next_role": "m3",
+          "avatar_config": {
+            "small_avatar": "avatar/geli_R.png",
+            "big_layout": {
+              "type": "triple",
+              "count": 3,
+              "images": [ "avatar/smart_L.png", "avatar/taomo.png","avatar/geli_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "m3",
+          "role_name": "帅马",
+          "text": "玩galgame，太好玩了",
+          "next_role": "m4",
+          "avatar_config": {
+            "small_avatar": "avatar/smart_R.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/smart_L.png", "avatar/geli.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "m4",
+          "role_name": "帅马",
+          "text": "不过我发现一件奇怪的事",
+          "next_role": "m5",
+          "avatar_config": {
+            "small_avatar": "avatar/smart_R.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/smart_L.png", "avatar/geli_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "m5",
+          "role_name": "帅马",
+          "text": "我们班的女生怎么都没有对话框，是不是伪人假扮的",
+          "next_role": "n1",
+          "avatar_config": {
+            "small_avatar": "avatar/smart_R.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/smart_L.png", "avatar/geli_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "n1",
+          "role_name": "尼哥",
+          "text": "666你无敌了",
+          "next_role": "n2",
+          "avatar_config": {
+            "small_avatar": "avatar/niger.png",
+            "big_layout": {
+              "type": "triple",
+              "count": 3,
+              "images": [ "avatar/smart_L.png","avatar/niger.png" ,"avatar/geli_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "n2",
+          "role_name": "尼哥",
+          "text": "不愧是gal之王gal王，无限掌握幻想之力",
+          "next_role": "m6",
+          "avatar_config": {
+            "small_avatar": "avatar/niger.png",
+            "big_layout": {
+              "type": "triple",
+              "count": 3,
+              "images": [ "avatar/smart_L.png", "avatar/niger_R.png", "avatar/geli_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "m6",
+          "role_name": "帅马",
+          "text": "Niger你放假干嘛了",
+          "next_role": "n3",
+          "avatar_config": {
+            "small_avatar": "avatar/smart_R.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/smart_L.png", "avatar/niger_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "n3",
+          "role_name": "尼哥",
+          "text": "我去新疆农家乐的，体验了两天无薪水摘棉花",
+          "next_role": "n4",
+          "avatar_config": {
+            "small_avatar": "avatar/niger_R.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/smart_L.png", "avatar/niger.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "n4",
+          "role_name": "尼哥",
+          "text": "不知道为什么过程中总有一种熟悉的感觉，就像是…",
+          "next_role": "n5",
+          "avatar_config": {
+            "small_avatar": "avatar/niger_R.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/smart_L.png", "avatar/niger.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "n5",
+          "role_name": "尼哥",
+          "text": "：…呃，来自血统的召唤！",
+          "next_role": "hs8",
+          "avatar_config": {
+            "small_avatar": "avatar/niger_R.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/smart_L.png", "avatar/niger_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs8",
+          "role_name": "韩少",
+          "text": "尼哥不愧是非洲大陆的舶来品，就适合摘棉花",
+          "next_role": "n6",
+          "avatar_config": {
+            "small_avatar": "avatar/hs_R.png",
+            "big_layout": {
+              "type": "triple",
+              "count": 3,
+              "images": [ "avatar/smart_L.png","avatar/hs_L.png", "avatar/niger_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "n6",
+          "role_name": "尼哥",
+          "text": "666，你妈。",
+          "next_role": "vco4",
+          "avatar_config": {
+            "small_avatar": "avatar/niger.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/niger_L.png", "avatar/niger_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "vco4",
+          "role_name": " ",
+          "text": "空气中弥漫着一丝危机的气味",
+          "next_role": "hs9",
+          "background": "black"
+        },
+        {
+          "role_id": "hs9",
+          "role_name": "韩少",
+          "text": "不好，J南来了",
+          "next_role": "j1",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "triple",
+              "count": 3,
+              "images": [ "avatar/geli.png","avatar/hs.png", "avatar/niger.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "j1",
+          "role_name": "J南",
+          "text": "！！！ 后面的男生在干什么？",
+          "next_role": "j2",
+          "avatar_config": {
+            "small_avatar": "avatar/jnBig.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/jnBig.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "j2",
+          "role_name": "J南",
+          "text": "到了就安心学习，还有200天就高考了，还有心思闲聊？  ！！！",
+          "next_role": "vco5",
+          "avatar_config": {
+            "small_avatar": "avatar/jnBig.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/jnBig.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "vco5",
+          "role_name": " ",
+          "text": ".............",
+          "next_role": "hs10",
+          "background": "black"
+        },
+        {
+          "role_id": "hs10",
+          "role_name": "韩少",
+          "text": "（OS）妈的，这狗J南真贱，明明还没上课，看来只能先假装学习一会了",
+          "next_role": "hs11",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs11",
+          "role_name": "韩少",
+          "text": "（OS）好困啊，早知道放假多睡点了，还好马上就吃饭了，再熬一会吧",
+          "next_role": "hs12",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs12",
+          "role_name": "韩少",
+          "text": "(OS)，玛德，想上厕所，死J南还不走",
+          "next_role": "vco6",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "vco6",
+          "role_name": " ",
+          "text": "20分钟后...",
+          "next_role": "hs13",
+          "background": "black"
+        },
+        {
+          "role_id": "hs13",
+          "role_name": "韩少",
+          "text": "终于走了，憋死我了",
+          "next_role": "",
+          "avatar_config": {
+            "small_avatar": "avatar/hs_R.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs_R.png" ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "scene_id": "EMtoilet",
+      "plot_id": "EMtoilet_1",
+      "branch_rules": [],
+      "default_branch_id": "main",
+      "preset_plots": [ "Eclassroom_1" ],
+      "dialog_flow": [
+        {
+          "role_id": "hs1",
+          "role_name": "韩少",
+          "text": "真是憋死我了",
+          "next_role": "hs2",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs2",
+          "role_name": "韩少",
+          "text": "oh,yes",
+          "next_role": "vco1",
+          "background": "black",
+          "avatar_config": {
+            "small_avatar": "avatar/hs_R.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs_R.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "vco1",
+          "role_name": " ",
+          "text": "8-----...",
+          "next_role": "vco2",
+          "background": "black",
+          "avatar_config": {
+            "small_avatar": "avatar/hs_L.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs_L.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "vco2",
+          "role_name": " ",
+          "text": "...",
+          "next_role": "vco3",
+          "background": "white"
+        },
+        {
+          "role_id": "vco3",
+          "role_name": " ",
+          "text": "...",
+          "next_role": "vco4",
+          "background": "black"
+        },
+        {
+          "role_id": "vco4",
+          "role_name": " ",
+          "text": "...",
+          "next_role": "vco5",
+          "background": "white"
+        },
+        {
+          "role_id": "vco5",
+          "role_name": " ",
+          "text": "。。。。。。。。。。。。。。。。。。。。",
+          "next_role": "hs3",
+          "background": "black",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs3",
+          "role_name": "韩少",
+          "text": "爽了，ohYeah",
+          "next_role": "",
+          "avatar_config": {
+            "small_avatar": "avatar/hs_R.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs_R.png" ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "scene_id": "EWtoilet",
+      "plot_id": "EWtoilet_1",
+      "branch_rules": [],
+      "default_branch_id": "main",
+      "dialog_flow": [
+        {
+          "role_id": "hs1",
+          "role_name": "韩少",
+          "text": "这就是女厕吗，有点意思",
+          "next_role": "w1",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs_Z.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "w1",
+          "role_name": "普通的高中生女子A",
+          "text": "呀! Hentai",
+          "next_role": "w2",
+          "avatar_config": {
+            "small_avatar": "avatar/wzx_N.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/wzx_N.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "w2",
+          "role_name": "普通的高中生女子A",
+          "text": "（OS）不过仔细看看有点痞，有点帅，这难道就是痞颜吗？QQQ.*.*",
+          "next_role": "hs2",
+          "avatar_config": {
+            "small_avatar": "avatar/wzx_N.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/wzx_N.png", "avatar/hs_Z.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs2",
+          "role_name": "韩少",
+          "text": "我去，没想到居然有人",
+          "next_role": "hs3",
+          "avatar_config": {
+            "small_avatar": "avatar/hs_Z.png",
+            "big_layout": {
+              "type": "dual",
+              "count": 2,
+              "images": [ "avatar/wzx_N.png", "avatar/hs.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs3",
+          "role_name": "韩少",
+          "text": "我还是快走吧...",
+          "next_role": "",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs.png" ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "scene_id": "EwaterRoom",
+      "plot_id": "EwaterRoom_1",
+      "branch_rules": [],
+      "default_branch_id": "main",
+      "dialog_flow": [
+        {
+          "role_id": "hs1",
+          "role_name": "韩少",
+          "text": "玛德，忘记带水杯了",
+          "next_role": "hs2",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs2",
+          "role_name": "韩少",
+          "text": "看来只能保持饥渴了。。。",
+          "next_role": "hs3",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs3",
+          "role_name": "韩少",
+          "text": "不对，能去蹭马丁的大杯子",
+          "next_role": "",
+          "avatar_config": {
+            "small_avatar": "avatar/hs_Z.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs_Z.png" ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "scene_id": "Eoffice",
+      "plot_id": "Eoffice_1",
+      "branch_rules": [],
+      "default_branch_id": "main",
+      "dialog_flow": [
+        {
+          "role_id": "hs1",
+          "role_name": "韩少",
+          "text": "到办公室了。。。。",
+          "next_role": "hs2",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs2",
+          "role_name": "韩少",
+          "text": "真是个阴森的地方，吓skr人",
+          "next_role": "hs3",
+          "avatar_config": {
+            "small_avatar": "avatar/hs.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs3",
+          "role_name": "韩少",
+          "text": "生物矮人不在，也许可以探索探索，说不定有宝藏",
+          "next_role": "",
+          "avatar_config": {
+            "small_avatar": "avatar/hs_Z.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs_Z.png" ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "scene_id": "Elibrary",
+      "plot_id": "Elibrary_1",
+      "branch_rules": [],
+      "default_branch_id": "main",
+      "dialog_flow": [
+        {
+          "role_id": "hs1",
+          "role_name": "韩少",
+          "text": "这真是个乱逛的好地方啊",
+          "next_role": "hs2",
+          "avatar_config": {
+            "small_avatar": "avatar/hs_Z.png",
+            "big_layout": {
+              "type": "single",
+              "count": 1,
+              "images": [ "avatar/hs_Z.png" ]
+            }
+          }
+        },
+        {
+          "role_id": "hs2",
+          "role_name": "韩少",
+          "text": "下次体育课来这听戈利演奏<Wending In The Dream>",
+          "next_role": ""
+        }
+      ]
+    },
+    {
+      "scene_id": "Ecanteen",
+      "plot_id": "Ecanteen_1",
+      "preset_plots": [ "Eclassroom_1", "EMtoilet_1", "Elibrary_1", "Eoffice_1" ],
+      "branch_rules": [],
+      "default_branch_id": "main",
+      "dialog_flow": [
+        {
+          "role_id": "vco1",
+          "role_name": " ",
+          "text": "饭点终于到了...",
+          "next_role": "hs1",
+          "background": "black"
+        },
+        {
+          "role_id": "hs1",
+          "role_name": "韩少",
+          "text": "又要来品鉴食堂的腚级美食了Y(￣v￣)Y",
+          "next_role": ""
+        }
+      ]
+    },
+    {
+      "scene_id": "Eclassroom",
+      "plot_id": "Eclassroom_2",
+      "preset_plots": [ "Ecanteen_1" ],
+      "branch_rules": [],
+      "default_branch_id": "main",
+      "dialog_flow": [
+        {
+          "role_id": "vco1",
+          "role_name": " ",
+          "text": "吃饱了...",
+          "next_role": "hs1",
+          "background": "black"
+        },
+        {
+          "role_id": "hs1",
+          "role_name": "韩少",
+          "text": "困死我了，准备睡觉吧",
+          "next_role": ""
+        }
+      ]
+    }
+  ]
+}

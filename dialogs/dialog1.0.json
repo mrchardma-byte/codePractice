@@ -1,0 +1,22 @@
+{
+  "scenes": [
+    {
+      "scene_id": "START",
+      "trigger_type": "auto",
+      "trigger_condition": "enter_scene_START",
+      "auto_close": 0,
+      "dialog_flow": [
+        {
+          "role_id": "a",
+          "role_name": "神秘人",
+          "texts": [
+            "你终于来了...",
+            "这个学校的夜晚，和你记忆里的不一样吧？",
+            "小心那些隐藏在阴影里的东西..."
+          ],
+          "next_role": ""
+        }
+      ]
+    }
+  ]
+}
