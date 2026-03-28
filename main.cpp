@@ -324,15 +324,13 @@ bool LoadAllTextures(Player &player);
 bool LoadOnceResource(tson::Tileson& parser, Player& player);
 bool LoadItemsAndInteractions(tson::Tileson& parser);
 void UnloadCurrentMapResources(std::unordered_map<uint32_t, TilesetData>& tilesetMap);
-void UnloadAllResources(
-    Texture2D& menuBg,
+void UnloadAllResources(//游戏内重载
     Font& chineseFont,
     bool isGameResourcesLoaded,
     const std::unordered_map<uint32_t, TilesetData>& tilesetMap,
     const Player& player);
 
 // --- 游戏状态处理 ---
-void HandleMenuState(GameState& currentState, const Rectangle& startButton);
 void HandleGameInputAndToggleCollisionLayer(bool& showCollisionLayer);
 void UpdatePlayerAndCameraAndChoiceAndMonster(
     Player& player,
@@ -343,7 +341,7 @@ void UpdatePlayerAndCameraAndChoiceAndMonster(
 void ConfirmSelectedChoice(int index);
 
 // --- 渲染相关 ---
-void RenderMenu(const Texture2D& menuBg, const Font& chineseFont, const Rectangle& startButton, int SCREEN_WIDTH, int SCREEN_HEIGHT);
+void RenderMenu( const Font& chineseFont);
 void RenderGame(
     const Camera2D& camera,
     const tson::Map* map,
@@ -411,9 +409,6 @@ void UpdateMonsterAI(Monster& monster, Player& player, tson::Layer* collisionLay
 // 全局变量定义
 // ============================================================================================
 GameData g_gameData;
-Texture2D escBg;
-Texture2D tabBg;
-Texture2D itemFlash;
 std::vector<std::string> allMaps;
 std::vector<Item> allItems;
 std::vector<std::string> savingTime(10, "null");
@@ -431,6 +426,15 @@ struct AllMusics
 };
 AllMusics allMusics;
 
+struct AllStickers//一些背景类的贴图
+{
+    Texture2D menuBg;
+    Texture2D escBg;
+    Texture2D tabBg;
+    Texture2D itemFlash;
+
+};
+AllStickers allstickers;
 
 // UI与状态标志
 bool isWindow = true;
@@ -468,12 +472,6 @@ int main()
     SetExitKey(KEY_NULL);
     // ==================== 菜单he escBg资源初始化 ====================
     tabTime = GetTime();
-    Texture2D menuBg;
-    Rectangle startButton;
-    menuBg = LoadTexture("Picture\\Other\\menu_bg.png");
-    escBg = LoadTexture("Picture\\Character\\exit_bg.png");
-    tabBg = LoadTexture("Picture\\Other\\tab_bg.png");
-    itemFlash = LoadTexture("Picture\\Effect\\flash.png");
     //****************************************************************一堆诡异的缩放设置
     int monitorWidth = GetMonitorWidth(0);  // 主显示器宽度
     int monitorHeight = GetMonitorHeight(0);// 主显示器高度
@@ -484,7 +482,7 @@ int main()
     TraceLog(LOG_INFO, "scaleX: %d", monitorWidth);
     TraceLog(LOG_INFO, "scaleY: %d", monitorHeight);
     SetWindowSize(SCREEN_WIDTH * g_gameData.scaleX, SCREEN_HEIGHT * g_gameData.scaleY);
-    startButton = { (SCREEN_WIDTH * (float)g_gameData.scale / 2.0f - 80.0f), (SCREEN_HEIGHT * (float)g_gameData.scale / 2.0f + 50.0f) , 160.0f * (float)g_gameData.scale, 60.0f * (float)g_gameData.scale };
+    
     //*****************************************************************诡异的结束
     // ==================== 游戏状态与变量 ====================
     
@@ -501,7 +499,7 @@ int main()
     tson::Layer* groundLayer = nullptr;
     tson::Layer* collisionLayer = nullptr;
     tson::Layer* openedFunituresLayer = nullptr;
-    tson::Layer* funitureLayer;
+    tson::Layer* funitureLayer = nullptr;
     Camera2D camera = { 0 };
     float cameraScale = CAMERA_SCALE;
     // -------------------- 主循环 --------------------
@@ -516,7 +514,6 @@ int main()
                 
                 TraceLog(LOG_INFO, "scale: %f", g_gameData.scale);
                 SetWindowSize(monitorWidth, monitorHeight);
-                startButton = { (float)(SCREEN_WIDTH * g_gameData.scale / 2.0f - 80.0f), (float)(SCREEN_HEIGHT * g_gameData.scale / 2.0f + 50.0f) , 160.0f * (float)g_gameData.scale, 60.0f * (float) g_gameData.scale };
                 camera.zoom = cameraScale*g_gameData.scale;
                 ToggleFullscreen();
                 isWindow = false;
@@ -529,7 +526,6 @@ int main()
                 
                 TraceLog(LOG_INFO, "scale: %f", g_gameData.scale);
                 SetWindowSize(SCREEN_WIDTH * g_gameData.scaleX, SCREEN_HEIGHT * g_gameData.scaleY);
-                startButton = { (float)(SCREEN_WIDTH * g_gameData.scale / 2.0f - 80.0f), (float)(SCREEN_HEIGHT * g_gameData.scale / 2.0f + 50.0f) , 160.0f * (float)g_gameData.scale, 60.0f * (float)g_gameData.scale };
                 camera.zoom = cameraScale * g_gameData.scale;
                 ToggleFullscreen();
                 isWindow = true;
@@ -539,8 +535,21 @@ int main()
 
         if (currentState == STATE_MENU)
         {
-            HandleMenuState(currentState, startButton);
-            RenderMenu(menuBg, chineseFont, startButton, SCREEN_WIDTH * g_gameData.scale, SCREEN_HEIGHT * g_gameData.scale);
+            // ==================== 首次进入游戏时加载所有资源 ====================
+            if (!isGameResourcesLoaded)
+            {
+                if (!LoadAllGameResources(parser, map, tilesetMap, player, groundLayer, collisionLayer, openedFunituresLayer, funitureLayer,
+                    tileWidth, tileHeight, mapWidth, mapHeight, camera, "Tile\\Eclassroom.json"))// 初始地图路径
+                {
+                    break; // 加载失败已调用 CloseWindow()
+                }
+                if (!LoadOnceResource(parser, player)) {
+                    TraceLog(LOG_ERROR, "游戏资源加载失败！检查资源路径和格式！");
+                    CloseWindow;
+                };
+                isGameResourcesLoaded = true;
+            }
+            RenderMenu(chineseFont);
             
         }
         else if (currentState == STATE_GAME)
@@ -553,20 +562,7 @@ int main()
                     tileWidth, tileHeight, mapWidth, mapHeight, camera, g_gameData.current_map_path);
                 hasConfirmLoad = false;
             }
-            // ==================== 首次进入游戏时加载所有资源 ====================
-            if (!isGameResourcesLoaded)
-            {
-                if (!LoadAllGameResources(parser, map, tilesetMap, player, groundLayer, collisionLayer, openedFunituresLayer,funitureLayer,
-					tileWidth, tileHeight, mapWidth, mapHeight, camera, "Tile\\Eclassroom.json"))// 初始地图路径
-                {
-                    break; // 加载失败已调用 CloseWindow()
-                }
-                if (!LoadOnceResource(parser, player)) {
-					TraceLog(LOG_ERROR, "游戏资源加载失败！检查资源路径和格式！");
-                    CloseWindow;
-                };
-                isGameResourcesLoaded = true;
-            }
+            
 
             // ==================== 玩家输入、移动、相机更新 ====================
             UpdatePlayerAndCameraAndChoiceAndMonster(player,monsterJ, collisionLayer, tileWidth, tileHeight, camera);
@@ -587,7 +583,7 @@ int main()
     }
     
     // ==================== 资源释放 ====================
-    UnloadAllResources(menuBg, chineseFont, isGameResourcesLoaded, tilesetMap, player);
+    UnloadAllResources(chineseFont, isGameResourcesLoaded, tilesetMap, player);
     CloseWindow();
     return 0;
 }
@@ -661,13 +657,6 @@ bool LoadAllGameResources(
 // 游戏逻辑与输入处理实现
 // ============================================================================================
 
-void HandleMenuState(GameState& currentState, const Rectangle& startButton)
-{
-    Vector2 mousePos = GetMousePosition();
-    if (CheckCollisionPointRec(mousePos, startButton) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-        currentState = STATE_GAME;
-    }
-}
 
 void HandleGameInputAndToggleCollisionLayer(bool& showCollisionLayer)
 {
@@ -809,42 +798,106 @@ void UpdatePlayerAndCameraAndChoiceAndMonster(
 // 渲染系统实现
 // ============================================================================================
 
-void RenderMenu(const Texture2D& menuBg, const Font& chineseFont, const Rectangle& startButton, int SCREEN_WIDTH, int SCREEN_HEIGHT)
+void RenderMenu( const Font& chineseFont)
 {
-    BeginDrawing();
-    ClearBackground(BLACK);
+    if (isLoading) {
+        BeginDrawing();
+        // 1. 获取屏幕尺寸（基础参考）
+        int screenWidth = GetScreenWidth();            // 游戏窗口屏幕宽度（像素）
+        int screenHeight = GetScreenHeight();          // 游戏窗口屏幕高度（像素）
+        if (!isWindow)screenHeight = GetMonitorHeight(0);
 
-    if (menuBg.id != 0) {
-        DrawTexturePro(menuBg,
-            { 0, 0, (float)menuBg.width, (float)menuBg.height },
-            { 0, 0, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT },
-            { 0, 0 }, 0.0f, WHITE);
+        Rectangle edst = { 0,0,screenWidth,screenHeight };
+        if (allstickers.tabBg.id != 0) {
+            //TraceLog(LOG_INFO, "***绘制TAB背景ing");
+            DrawTexturePro(allstickers.tabBg,
+                { 0, 0, (float)allstickers.tabBg.width, (float)allstickers.tabBg.height },
+                { 0, 0, float(screenWidth), float(screenHeight) },
+                { 0, 0 }, 0.0f, WHITE);
+
+        }
+        else {
+            TraceLog(LOG_WARNING, "tabBg没有成功载入");
+        }
+        LoadGame(chineseFont);
+        //TraceLog(LOG_INFO, "渲染Load");
+        EndDrawing();
     }
-    
-    const char* gameTitle = u8"宿中的另一面";
-    Vector2 titleSize = MeasureTextEx(chineseFont, gameTitle, 72 * g_gameData.scale, 0);
-    Vector2 titlePos = {
-        SCREEN_WIDTH / 2 - titleSize.x / 2,
-        SCREEN_HEIGHT / 2 - 80
-    };
-    DrawTextEx(chineseFont, gameTitle, titlePos, 72 * g_gameData.scale, 0, RED);
-    
-    const char* startText = u8"开始追忆";
-    Vector2 buttonTextSize = MeasureTextEx(chineseFont, startText, 32 * g_gameData.scale, 0);
-    Vector2 buttonTextPos = {
-        startButton.x + (startButton.width - buttonTextSize.x) / 2,
-        startButton.y + 15
-    };
-    
-    if (CheckCollisionPointRec(GetMousePosition(), startButton)) {
-        DrawRectangleRec(startButton, ORANGE);
-        DrawTextEx(chineseFont, startText, buttonTextPos, 32 * g_gameData.scale, 0, BLACK);
-    } else {
-        DrawRectangleRec(startButton, YELLOW);
-        DrawTextEx(chineseFont, startText, buttonTextPos, 32 * g_gameData.scale, 0, BLACK);
+    else {
+        int SCREEN_WIDTH = GetScreenWidth();
+        int SCREEN_HEIGHT = GetScreenHeight();
+        Rectangle startButton = { (SCREEN_WIDTH / 2.0f - 120.0f * (float)g_gameData.scale), (SCREEN_HEIGHT / 2.0f - 45 * g_gameData.scale) , 240.0f * (float)g_gameData.scale, 90.0f * (float)g_gameData.scale };
+        BeginDrawing();
+        ClearBackground(BLACK);
+
+        if (allstickers.menuBg.id != 0) {
+            DrawTexturePro(allstickers.menuBg,
+                { 0, 0, (float)allstickers.menuBg.width, (float)allstickers.menuBg.height },
+                { 0, 0, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT },
+                { 0, 0 }, 0.0f, WHITE);
+        }
+        /*
+        const char* gameTitle = u8"宿中的另一面";
+        Vector2 titleSize = MeasureTextEx(chineseFont, gameTitle, 72 * g_gameData.scale, 0);
+        Vector2 titlePos = {
+            SCREEN_WIDTH / 2 - titleSize.x / 2,
+            SCREEN_HEIGHT / 2 - 80
+        };
+        DrawTextEx(chineseFont, gameTitle, titlePos, 72 * g_gameData.scale, 0, RED);
+        */
+        const char* startText = u8"开始追忆";
+        int fontSize = 48 * g_gameData.scale;
+        Vector2 buttonTextSize = MeasureTextEx(chineseFont, startText, fontSize, 0);
+        Vector2 buttonTextPos = {
+            startButton.x + (startButton.width - buttonTextSize.x) / 2,
+            startButton.y + 22 * (float)g_gameData.scale
+        };
+        Vector2 mousePos = GetMousePosition();
+
+        if (CheckCollisionPointRec(mousePos, startButton)) {
+            DrawRectangleRec(startButton, Fade(PURPLE, 0.8f));
+            DrawTextEx(chineseFont, startText, buttonTextPos, fontSize, 0, RED);
+        }
+        else {
+            DrawRectangleRec(startButton, Fade(ORANGE, 0.8f));
+            DrawTextEx(chineseFont, startText, buttonTextPos, fontSize, 0, BLACK);
+        }
+        DrawRectangleLinesEx(startButton, 4 * g_gameData.scale, BLACK);
+
+
+        //绘制读档
+        float saveWidth = 240 * g_gameData.scale;
+        float saveHeight = 90 * g_gameData.scale;
+        Rectangle save{ GetScreenWidth() / 2 - saveWidth / 2,GetScreenHeight() / 4 ,saveWidth,saveHeight };
+        const char* Ltext = u8"读取存档";
+        int textWidth = MeasureText(Ltext, fontSize);
+        Rectangle load{ startButton.x,startButton.y + 2 * startButton.height,startButton.width,startButton.height };
+        Vector2 loadTextSize = MeasureTextEx(chineseFont, Ltext, fontSize, 0);
+        Vector2 loadPos = {
+           load.x + (load.width - loadTextSize.x) / 2,
+           load.y + 22 * (float)g_gameData.scale
+        };
+        if (CheckCollisionPointRec(mousePos, load)) {
+            DrawRectangleRec(load, Fade(PURPLE, 0.8f));
+            DrawTextEx(chineseFont, Ltext, loadPos, fontSize, 0, GREEN);
+        }
+        else {
+            DrawRectangleRec(load, Fade(ORANGE, 0.8f));
+            DrawTextEx(chineseFont, Ltext, loadPos, fontSize, 0, BLACK);
+        }
+        DrawRectangleLinesEx(load, 4 * g_gameData.scale, BLACK);
+
+        EndDrawing();
+        //执行对应操作
+        if (CheckCollisionPointRec(mousePos, startButton) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !isLoading) {
+            currentState = STATE_GAME;
+        }
+        if (CheckCollisionPointRec(mousePos, load) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            isLoading = true;
+            TraceLog(LOG_INFO, "isLoading==true");
+        }
     }
 
-    EndDrawing();
 }
 
 void RenderGame(
@@ -950,10 +1003,10 @@ void RenderGame(
         if (!isWindow)screenHeight = GetMonitorHeight(0);
 
         Rectangle edst = { 0,0,screenWidth,screenHeight };
-        if (tabBg.id != 0) {
+        if (allstickers.tabBg.id != 0) {
             //TraceLog(LOG_INFO, "***绘制TAB背景ing");
-            DrawTexturePro(tabBg,
-                { 0, 0, (float)tabBg.width, (float)tabBg.height },
+            DrawTexturePro(allstickers.tabBg,
+                { 0, 0, (float)allstickers.tabBg.width, (float)allstickers.tabBg.height },
                 { 0, 0, float(screenWidth), float(screenHeight) },
                 { 0, 0 }, 0.0f, WHITE);
 
@@ -990,8 +1043,8 @@ void RenderGame(
 
         Rectangle edst = { screenWidth / 4 ,0,screenWidth / 2,screenHeight };
         DrawTexturePro(
-            escBg,
-            { 0, 0, (float)escBg.width, (float)escBg.height },
+            allstickers.escBg,
+            { 0, 0, (float)allstickers.escBg.width, (float)allstickers.escBg.height },
             edst,
             { 0, 0 },
             0.0f,
@@ -1015,17 +1068,16 @@ void RenderGame(
 }
 
 void UnloadAllResources(
-    Texture2D& menuBg,
     Font& chineseFont,
     bool isGameResourcesLoaded,
     const std::unordered_map<uint32_t, TilesetData>& tilesetMap,
     const Player& player)
 {
     // --- 释放所有纹理与字体资源 ---
-    if (menuBg.id != 0) UnloadTexture(menuBg);
-    if (tabBg.id != 0) UnloadTexture(tabBg);
-    if (escBg.id != 0) UnloadTexture(escBg);
-    
+    if (allstickers.menuBg.id != 0) UnloadTexture(allstickers.menuBg);
+    if (allstickers.tabBg.id != 0) UnloadTexture(allstickers.tabBg);
+    if (allstickers.escBg.id != 0) UnloadTexture(allstickers.escBg);
+    if (allstickers.itemFlash.id != 0) UnloadTexture(allstickers.itemFlash);
     if (chineseFont.baseSize != 0 && chineseFont.texture.id != GetFontDefault().texture.id) {
         UnloadFont(chineseFont);
     }
@@ -1050,13 +1102,14 @@ void UnloadAllResources(
 
         UnloadAllAvatarTextures();
 
+        //卸载音乐资源
         UnloadSound(allMusics.clickEscAndTab);
         UnloadSound(allMusics.cancle);
         UnloadSound(allMusics.save);
         UnloadSound(allMusics.getThing);
         UnloadSound(allMusics.tip);
-        UnloadTexture(tabBg);
-        UnloadTexture(escBg);
+        UnloadTexture(allstickers.tabBg);
+        UnloadTexture(allstickers.escBg);
 
 
     }
@@ -2225,9 +2278,9 @@ void drawItemFlash() {
             float time = GetTime() * 2.0f;  // 2.0f = 渐变速度，越大越快
             unsigned char alpha = (sin(time) + 1) * 127.5f;  // 映射 -1~1 → 0~255
             Color tint = { 255, 255, 255, alpha };  // WHITE底色 + 动态透明度
-            Rectangle sourceRec = { 0, 0, (float)itemFlash.width, (float)itemFlash.height };
+            Rectangle sourceRec = { 0, 0, (float)allstickers.itemFlash.width, (float)allstickers.itemFlash.height };
             Rectangle destRec = { item.x,item.y,4 * g_gameData.scale,4*g_gameData.scale };
-            DrawTexturePro(itemFlash, sourceRec, destRec,{0,0}, 0.0f, tint);
+            DrawTexturePro(allstickers.itemFlash, sourceRec, destRec,{0,0}, 0.0f, tint);
         }
     }
     return;
@@ -2328,7 +2381,8 @@ void CheckIfLockedDoorCanBeOpened(const Font& chineseFont) {
 
 
 void RenderTab(const Font& font) {
-    
+    if (!isInTab)return;
+
     if (IsKeyPressed(KEY_TAB)&&GetTime()-tabTime > 0.5f) {
         isInTab = false;
         TraceLog(LOG_INFO,("****退出TAB了"));
@@ -2338,8 +2392,7 @@ void RenderTab(const Font& font) {
         tabTime = GetTime();
         PlaySound(allMusics.cancle);
     }
-
-
+ 
     float saveWidth = 300 * g_gameData.scale;
     float saveHeight = 150 * g_gameData.scale;
     Rectangle save{ GetScreenWidth() / 2 - saveWidth / 2,GetScreenHeight() / 4 ,saveWidth,saveHeight };
@@ -2361,7 +2414,7 @@ void RenderTab(const Font& font) {
     
     //*************************************************************************************
     
-    if (!isSaving && !isLoading) {
+    if (!isSaving && !isLoading && currentState==STATE_GAME) {
         if (CheckCollisionPointRec(mousePos, save)) {
             DrawRectangleLinesEx(save, 6 * g_gameData.scale, RED);
 
@@ -2386,7 +2439,7 @@ void RenderTab(const Font& font) {
 
 
     //绘制存档界面
-    if (isSaving) {
+    if (isSaving&&currentState==STATE_GAME) {
         if (IsKeyPressed(KEY_ESCAPE)) {
             isSaving = false;
             PlaySound(allMusics.cancle);
@@ -2838,7 +2891,7 @@ void DoLoadGame(int index) {
             
             }
     
-    
+            currentState = STATE_GAME;
 }
 
 
@@ -3337,6 +3390,13 @@ bool LoadAllTextures(Player &player) {
         CloseWindow();
         return false;
     }
+
+    //加载背景等贴图纹理
+    allstickers.menuBg = LoadTexture("Picture\\Other\\menu_bg.png");
+    allstickers.escBg = LoadTexture("Picture\\Character\\exit_bg.png");
+    allstickers.tabBg = LoadTexture("Picture\\Other\\tab_bg.png");
+    allstickers.itemFlash = LoadTexture("Picture\\Effect\\flash.png");
+
 	return true;
 }
 
