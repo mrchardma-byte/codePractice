@@ -242,13 +242,12 @@ struct GameData {
     double scaleX = 1.0;    // 宽度缩放因子（当前窗口宽/基准宽）
     double scaleY = 1.0;    // 高度缩放因子（当前窗口高/基准高）
     double scale = 0.71;     // 统一缩放因子（取min(scaleX, scaleY)，避免拉伸）
-    bool isESC = false;     //是否在ESC界面
     std::vector<ItemPoint> itemPoints;//所有地图物品
     std::vector<LockedFuniture> funitures;//互动家具
     std::string save_date = ""; //存入存档的系统时间
     Monster monsterJ ;
     Monster monsterS;
-    bool isInUi = false;
+    
 };
 
 // ============================================================================================
@@ -437,17 +436,28 @@ struct AllStickers//一些背景类的贴图
 AllStickers allstickers;
 
 // UI与状态标志
-bool isWindow = true;
-bool isSaving = false;
-bool showSavingConfirm = false;
-int selectedSavingIndex = -1;
-bool isInTab = false;
-float tabTime;
-bool isLoading = false;
-int selectedLoadingIndex = -1;
-bool showLoadingConfirm = false;
-bool hasConfirmLoad = false;
-bool isItemShowing = false;
+struct AllStates {
+    bool isWindow = true;
+    bool isSaving = false;
+    bool showSavingConfirm = false;
+    bool showLoadingConfirm = false;
+    bool hasConfirmLoad = false;
+    bool isItemShowing = false;
+    bool isInTab = false;
+    float tabTime;
+    bool isLoading = false;
+    bool isESC = false;
+    bool isInUi = false;
+};
+AllStates allStates;
+
+struct AllIndex {
+    int selectedSavingIndex = -1;
+    int selectedLoadingIndex = -1;
+};
+
+AllIndex allindex;
+
 
 // ============================================================================================
 // 主函数
@@ -471,7 +481,7 @@ int main()
     InitializeWindowAndFont(chineseFont,SCREEN_WIDTH , SCREEN_HEIGHT );
     SetExitKey(KEY_NULL);
     // ==================== 菜单he escBg资源初始化 ====================
-    tabTime = GetTime();
+    allStates.tabTime = GetTime();
     //****************************************************************一堆诡异的缩放设置
     int monitorWidth = GetMonitorWidth(0);  // 主显示器宽度
     int monitorHeight = GetMonitorHeight(0);// 主显示器高度
@@ -507,7 +517,7 @@ int main()
     {   //切换全屏与窗口缩放
         if (IsKeyPressed(KEY_F11))
         {
-            if (isWindow) {//切到全屏
+            if (allStates.isWindow) {//切到全屏
                 g_gameData.scaleX = (double)monitorWidth / SCREEN_WIDTH ;
                 g_gameData.scaleY = (double)monitorHeight / SCREEN_HEIGHT;
                 g_gameData.scale = (g_gameData.scaleX <= g_gameData.scaleY) ? g_gameData.scaleX : g_gameData.scaleY;
@@ -516,7 +526,7 @@ int main()
                 SetWindowSize(monitorWidth, monitorHeight);
                 camera.zoom = cameraScale*g_gameData.scale;
                 ToggleFullscreen();
-                isWindow = false;
+                allStates.isWindow = false;
                 TraceLog(LOG_INFO, "**切换到全屏，当前getscreenheight高度为：%d \n GetMointorHeight高度为%d\n scaleY为 %f", GetScreenHeight(), GetMonitorHeight(0),g_gameData.scaleY);
             }
             else {
@@ -528,7 +538,7 @@ int main()
                 SetWindowSize(SCREEN_WIDTH * g_gameData.scaleX, SCREEN_HEIGHT * g_gameData.scaleY);
                 camera.zoom = cameraScale * g_gameData.scale;
                 ToggleFullscreen();
-                isWindow = true;
+                allStates.isWindow = true;
                 TraceLog(LOG_INFO, "**切换到窗口，当前getscreenheight高度为：%d \n GetMointorHeight高度为%d", GetScreenHeight(), GetMonitorHeight(0));
             }
         }
@@ -557,10 +567,10 @@ int main()
             // ==================== 切换碰撞层显示/隐藏 ====================
             HandleGameInputAndToggleCollisionLayer(showCollisionLayer);
             //读档后重新加载全局
-            if (hasConfirmLoad) {
+            if (allStates.hasConfirmLoad) {
                 LoadAllGameResources(parser, map, tilesetMap, player, groundLayer, collisionLayer, openedFunituresLayer,funitureLayer,
                     tileWidth, tileHeight, mapWidth, mapHeight, camera, g_gameData.current_map_path);
-                hasConfirmLoad = false;
+                allStates.hasConfirmLoad = false;
             }
             
 
@@ -660,13 +670,13 @@ bool LoadAllGameResources(
 
 void HandleGameInputAndToggleCollisionLayer(bool& showCollisionLayer)
 {
-    if (!isInTab && ((GetTime() - tabTime) > 0.5f)) {
+    if (!allStates.isInTab && ((GetTime() - allStates.tabTime) > 0.5f)) {
         if (IsKeyPressed(KEY_TAB)) {
             TraceLog(LOG_WARNING, "*****切换到TAB");
-            isInTab = true;
+            allStates.isInTab = true;
             PlaySound(allMusics.clickEscAndTab);
-            tabTime = GetTime();
-            isItemShowing = false;
+            allStates.tabTime = GetTime();
+            allStates.isItemShowing = false;
         }
     }
     
@@ -677,26 +687,26 @@ void HandleGameInputAndToggleCollisionLayer(bool& showCollisionLayer)
     }
     
     // --- ESC 菜单处理 ---
-    if (!isSaving && !isLoading && !isItemShowing) {
+    if (!allStates.isSaving && !allStates.isLoading && !allStates.isItemShowing) {
         if (IsKeyPressed(KEY_ESCAPE)) {
-            g_gameData.isESC = !g_gameData.isESC;
-            if (g_gameData.isESC) PlaySound(allMusics.clickEscAndTab);
+            allStates.isESC = !allStates.isESC;
+            if (allStates.isESC) PlaySound(allMusics.clickEscAndTab);
             else PlaySound(allMusics.cancle);
         }
     }
 
-    if (g_gameData.isESC) {
+    if (allStates.isESC) {
         if (IsKeyPressed(KEY_Y)) {
             CloseWindow();
             exit(0);
         }
-        if (IsKeyPressed(KEY_N)) g_gameData.isESC = false;
+        if (IsKeyPressed(KEY_N)) allStates.isESC = false;
     }
     //判定是否在ui界面，在则停止玩家和怪物移动
-    if(isInTab || g_gameData.isESC || isItemShowing || isLoading) {
-		g_gameData.isInUi = true;
+    if(allStates.isInTab || allStates.isESC || allStates.isItemShowing || allStates.isLoading) {
+		allStates.isInUi = true;
 	}
-	else { g_gameData.isInUi = false; }
+	else { allStates.isInUi = false; }
 }
 
 void UpdatePlayerAndCameraAndChoiceAndMonster(
@@ -721,7 +731,7 @@ void UpdatePlayerAndCameraAndChoiceAndMonster(
             if (IsKeyPressed(KEY_DOWN) && g_gameData.selected_choice_index < (int)g_gameData.current_choices.size() - 1) {
                 g_gameData.selected_choice_index++;
             }
-            if (IsKeyPressed(KEY_R) && !isInTab && !g_gameData.isESC) {
+            if (IsKeyPressed(KEY_R) && !allStates.isInUi) {
                 if (g_gameData.selected_choice_index >= 0 && g_gameData.selected_choice_index < (int)g_gameData.current_choices.size()) {
                     ConfirmSelectedChoice(g_gameData.selected_choice_index);
                 }
@@ -730,7 +740,7 @@ void UpdatePlayerAndCameraAndChoiceAndMonster(
         }
         
         // --- 对话翻页处理 ---
-        if (!g_gameData.isESC && !isInTab && (IsKeyPressed(KEY_F) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) && g_gameData.current_choices.empty()) {
+        if (!allStates.isInUi && (IsKeyPressed(KEY_F) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) && g_gameData.current_choices.empty()) {
             UpdateDialogContext();
         }
         
@@ -768,7 +778,7 @@ void UpdatePlayerAndCameraAndChoiceAndMonster(
         player.frameCounter = 0;
     }
     
-    if (isInTab || g_gameData.isESC || isItemShowing) player.velocity = { 0, 0 };
+    if (allStates.isInUi) player.velocity = { 0, 0 };
     
     Vector2 newPos = {
         player.hitbox.x + player.velocity.x * GetFrameTime(),
@@ -800,12 +810,12 @@ void UpdatePlayerAndCameraAndChoiceAndMonster(
 
 void RenderMenu( const Font& chineseFont)
 {
-    if (isLoading) {
+    if (allStates.isLoading) {
         BeginDrawing();
         // 1. 获取屏幕尺寸（基础参考）
         int screenWidth = GetScreenWidth();            // 游戏窗口屏幕宽度（像素）
         int screenHeight = GetScreenHeight();          // 游戏窗口屏幕高度（像素）
-        if (!isWindow)screenHeight = GetMonitorHeight(0);
+        if (!allStates.isWindow)screenHeight = GetMonitorHeight(0);
 
         Rectangle edst = { 0,0,screenWidth,screenHeight };
         if (allstickers.tabBg.id != 0) {
@@ -889,11 +899,11 @@ void RenderMenu( const Font& chineseFont)
 
         EndDrawing();
         //执行对应操作
-        if (CheckCollisionPointRec(mousePos, startButton) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !isLoading) {
+        if (CheckCollisionPointRec(mousePos, startButton) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !allStates.isLoading) {
             currentState = STATE_GAME;
         }
         if (CheckCollisionPointRec(mousePos, load) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            isLoading = true;
+            allStates.isLoading = true;
             TraceLog(LOG_INFO, "isLoading==true");
         }
     }
@@ -978,9 +988,9 @@ void RenderGame(
     // 绘制UI===============================================================
 
     //绘制物品捡拾提示
-    if(!isInTab&&!g_gameData.isESC)CheckPlayerWithMapItemsAndInfo(chineseFont, player);
+    if(!allStates.isInUi)CheckPlayerWithMapItemsAndInfo(chineseFont, player);
     //锁住的门提示
-    if (!isInTab&&!g_gameData.isESC)CheckIfLockedDoorCanBeOpened(chineseFont);
+    if (!allStates.isInUi)CheckIfLockedDoorCanBeOpened(chineseFont);
     //顶部ui
     const char* uiText = u8"WASD 移动  Raylib + Tiled JSON";
     Vector2 uiPos = { 10, 10 };
@@ -991,16 +1001,16 @@ void RenderGame(
     const char* sceneText = sceneTextStr.c_str();
     DrawTextEx(chineseFont, sceneText, { 10, 60 }, 24, 0, SKYBLUE);
     //绘制物品
-    if (!g_gameData.isESC && !g_gameData.is_dialog_showing && !isSaving && !isLoading) {
+    if (!allStates.isESC&&!allStates.isInTab && !g_gameData.is_dialog_showing) {
         DrawInventoryUI(chineseFont);
     }
     //TABUI
     //绘制tab背景=====================================================
-    if (isInTab) {
+    if (allStates.isInTab) {
         // 1. 获取屏幕尺寸（基础参考）
         int screenWidth = GetScreenWidth();            // 游戏窗口屏幕宽度（像素）
         int screenHeight = GetScreenHeight();          // 游戏窗口屏幕高度（像素）
-        if (!isWindow)screenHeight = GetMonitorHeight(0);
+        if (!allStates.isWindow)screenHeight = GetMonitorHeight(0);
 
         Rectangle edst = { 0,0,screenWidth,screenHeight };
         if (allstickers.tabBg.id != 0) {
@@ -1028,14 +1038,14 @@ void RenderGame(
             { 0, 0 }, 0.0f, WHITE);
 
     }
-    if(!g_gameData.isESC)
-    if (isInTab) {
+    if(!allStates.isESC)
+    if (allStates.isInTab) {
         RenderTab(chineseFont);
     }
 
     //draw ESC ui
         //=========================draw EXIT_BG===========================
-    if (g_gameData.isESC) {
+    if (allStates.isESC) {
         // ===================== 相机视口坐标计算（核心！适配大地图+相机缩放） =====================
         // 1. 获取屏幕尺寸（基础参考）
         const int screenWidth = GetScreenWidth();            // 游戏窗口屏幕宽度（像素）
@@ -2041,9 +2051,10 @@ void DrawInventoryUI(const Font& chineseFont) {
     const int START_Y = 10 * g_gameData.scale;
     int screenWidth = GetScreenWidth();
     int screenHeight = GetScreenHeight();
-    if (!isWindow)screenHeight = GetMonitorHeight(0);
+    if (!allStates.isWindow)screenHeight = GetMonitorHeight(0);
     //绘制物品说明图片
-    if (isItemShowing) {
+    if (allStates.isItemShowing) {
+        TraceLog(LOG_INFO, "绘制物品说明大图");
         DrawRectangle( 0,0,screenWidth,screenHeight,Fade(BLACK,0.6f) );
         int width = screenWidth / 2;
         int height = width / currentShowingItem.istTex.width * currentShowingItem.istTex.height;
@@ -2072,13 +2083,13 @@ void DrawInventoryUI(const Font& chineseFont) {
             0,0,(screenWidth - width) / 2,screenHeight
         };
         if (CheckCollisionPointRec(mousePos, insR) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            isItemShowing = false;
+            allStates.isItemShowing = false;
         }
         if (CheckCollisionPointRec(mousePos, insL) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            isItemShowing = false;
+            allStates.isItemShowing = false;
         }
-        if (IsKeyPressed(KEY_ESCAPE)&&!isInTab) {
-            isItemShowing = false;
+        if (IsKeyPressed(KEY_ESCAPE)&&!allStates.isInTab) {
+            allStates.isItemShowing = false;
         }
     }
     // 第一步：绘制物品栏背景
@@ -2166,8 +2177,9 @@ void DrawInventoryUI(const Font& chineseFont) {
             
         }
 
-        if (g_gameData.hoveredItemIndex == i && item.isExist && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && item.isInstructionExist && !isItemShowing && !isInTab && !g_gameData.isESC) {
-            isItemShowing = true;
+        if (g_gameData.hoveredItemIndex == i && item.isExist && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && item.isInstructionExist && !allStates.isInUi) {
+            allStates.isItemShowing = true;
+            TraceLog(LOG_INFO, "isItemShowing是true");
             currentShowingItem = item;
         } 
         
@@ -2381,15 +2393,15 @@ void CheckIfLockedDoorCanBeOpened(const Font& chineseFont) {
 
 
 void RenderTab(const Font& font) {
-    if (!isInTab)return;
+    if (!allStates.isInTab)return;
 
-    if (IsKeyPressed(KEY_TAB)&&GetTime()-tabTime > 0.5f) {
-        isInTab = false;
+    if (IsKeyPressed(KEY_TAB)&&GetTime()- allStates.tabTime > 0.5f) {
+        allStates.isInTab = false;
         TraceLog(LOG_INFO,("****退出TAB了"));
-        isSaving = false;
-        isLoading = false;
-        showSavingConfirm = false;
-        tabTime = GetTime();
+        allStates.isSaving = false;
+        allStates.isLoading = false;
+        allStates.showSavingConfirm = false;
+        allStates.tabTime = GetTime();
         PlaySound(allMusics.cancle);
     }
  
@@ -2414,13 +2426,13 @@ void RenderTab(const Font& font) {
     
     //*************************************************************************************
     
-    if (!isSaving && !isLoading && currentState==STATE_GAME) {
+    if (!allStates.isSaving && !allStates.isLoading && currentState==STATE_GAME) {
         if (CheckCollisionPointRec(mousePos, save)) {
             DrawRectangleLinesEx(save, 6 * g_gameData.scale, RED);
 
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                isSaving = true;
-                tabTime = GetTime();
+                allStates.isSaving = true;
+                allStates.tabTime = GetTime();
                 PlaySound(allMusics.clickEscAndTab);
             }
         }
@@ -2429,8 +2441,8 @@ void RenderTab(const Font& font) {
             DrawRectangleLinesEx(load, 6 * g_gameData.scale, RED);
 
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                isLoading = true;
-                tabTime = GetTime();
+                allStates.isLoading = true;
+                allStates.tabTime = GetTime();
                 PlaySound(allMusics.clickEscAndTab);
             }
         }
@@ -2439,9 +2451,9 @@ void RenderTab(const Font& font) {
 
 
     //绘制存档界面
-    if (isSaving&&currentState==STATE_GAME) {
+    if (allStates.isSaving&&currentState==STATE_GAME) {
         if (IsKeyPressed(KEY_ESCAPE)) {
-            isSaving = false;
+            allStates.isSaving = false;
             PlaySound(allMusics.cancle);
         }
         // ========== 存档选项界面核心绘制 ==========
@@ -2474,10 +2486,10 @@ void RenderTab(const Font& font) {
         DrawRectangleLinesEx(escRect, 6.0f * g_gameData.scale, BLACK);
         int Xsize = 64*g_gameData.scale;
         DrawText("x", escRectX +  (length-Xsize)/2+14*g_gameData.scale , escRectY + (length - Xsize) / 2, Xsize, RED);
-        if (CheckCollisionPointRec(mousePos, escRect)&& !showSavingConfirm) {
+        if (CheckCollisionPointRec(mousePos, escRect)&& !allStates.showSavingConfirm) {
             DrawRectangleLinesEx(escRect, 6.0f * g_gameData.scale, YELLOW);
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                isSaving = false;
+                allStates.isSaving = false;
             }
         }
 
@@ -2500,12 +2512,12 @@ void RenderTab(const Font& font) {
             {
                 borderColor = YELLOW;
                 // 8. 鼠标左键按下：触发确认弹窗，记录选中索引
-                if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !showSavingConfirm && GetTime() - tabTime > 0.1f)
+                if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !allStates.showSavingConfirm && GetTime() - allStates.tabTime > 0.1f)
                 {
-                    showSavingConfirm = true;
-                    selectedSavingIndex = index;
+                    allStates.showSavingConfirm = true;
+                    allindex.selectedSavingIndex = index;
                     TraceLog(LOG_INFO, "***目前索引是%d", index);
-                    tabTime = GetTime();
+                    allStates.tabTime = GetTime();
                 }
             }
 
@@ -2530,7 +2542,7 @@ void RenderTab(const Font& font) {
         }
 
         // 11. 确认弹窗绘制：选中存档后显示，居中弹窗+是否选项
-        if (showSavingConfirm && selectedSavingIndex != -1 && GetTime() - tabTime > 0.1f)
+        if (allStates.showSavingConfirm && allindex.selectedSavingIndex != -1 && GetTime() - allStates.tabTime > 0.1f)
         {
             // 绘制全屏遮罩（半透黑，遮挡背景，突出弹窗）
             DrawRectangle(0, 0, screenW, screenH, Fade(BLACK, 0.6f));
@@ -2578,9 +2590,9 @@ void RenderTab(const Font& font) {
                 if (CheckCollisionPointRec(mousePos, btnYes))
                 {
                     // 执行存档/覆盖操作
-                    GameElementsPassAndSive(selectedSavingIndex);
-                    TraceLog(LOG_INFO, "***执行的索引是%d", selectedSavingIndex);
-                    showSavingConfirm = false; // 关闭弹窗
+                    GameElementsPassAndSive(allindex.selectedSavingIndex);
+                    TraceLog(LOG_INFO, "***执行的索引是%d", allindex.selectedSavingIndex);
+                    allStates.showSavingConfirm = false; // 关闭弹窗
                     PlaySound(allMusics.save);
                     //重载存档时间
                     for (int i = 0; i < 10; i++) {
@@ -2599,19 +2611,19 @@ void RenderTab(const Font& font) {
                             }
                         }
                     }
-                    selectedSavingIndex = -1;  // 重置选中索引
+                    allindex.selectedSavingIndex = -1;  // 重置选中索引
                 }
                 else if (CheckCollisionPointRec(mousePos, btnNo))
                 {
-                    showSavingConfirm = false; // 关闭弹窗，不执行操作
-                    selectedSavingIndex = -1;  // 重置选中索引
+                    allStates.showSavingConfirm = false; // 关闭弹窗，不执行操作
+                    allindex.selectedSavingIndex = -1;  // 重置选中索引
                 }
             }
         }
     }
 
     //绘制读档界面
-    if (isLoading) {
+    if (allStates.isLoading) {
         LoadGame(font);
     }
     
@@ -2671,7 +2683,7 @@ void GameElementsPassAndSive(int index) {
 }
 
 void LoadGame(const Font& font) {
-    if (IsKeyPressed(KEY_ESCAPE))isLoading = false;
+    if (IsKeyPressed(KEY_ESCAPE))allStates.isLoading = false;
     // ========== 读档选项界面核心绘制（相机外绘制，与存档界面同级） ==========
 // 1. 获取屏幕宽高（动态适配，与存档完全一致）
     int screenW = GetScreenWidth();
@@ -2703,10 +2715,10 @@ void LoadGame(const Font& font) {
     DrawRectangleLinesEx(escRect, 6.0f * g_gameData.scale, BLACK);
     int Xsize = 64 * g_gameData.scale;
     DrawText("x", escRectX + (length - Xsize) / 2 + 14 * g_gameData.scale, escRectY + (length - Xsize) / 2, Xsize, RED);
-    if (CheckCollisionPointRec(mousePos, escRect) && !showLoadingConfirm) {
+    if (CheckCollisionPointRec(mousePos, escRect) && !allStates.showLoadingConfirm) {
         DrawRectangleLinesEx(escRect, 6.0f * g_gameData.scale, YELLOW);
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            isLoading = false; // 关闭读档界面，与存档的isSaving=false对应
+            allStates.isLoading = false; // 关闭读档界面，与存档的isSaving=false对应
             PlaySound(allMusics.cancle);
         }
     }
@@ -2730,12 +2742,12 @@ void LoadGame(const Font& font) {
         {
             borderColor = YELLOW;
             // 8. 鼠标左键按下：防连点+触发读档确认弹窗（与存档一致）
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !showLoadingConfirm && GetTime() - tabTime > 0.1f)
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !allStates.showLoadingConfirm && GetTime() - allStates.tabTime > 0.1f)
             {
-                showLoadingConfirm = true;
-                selectedLoadingIndex = index;
+                allStates.showLoadingConfirm = true;
+                allindex.selectedLoadingIndex = index;
                 TraceLog(LOG_INFO, "***目前选中读档索引是%d", index);
-                tabTime = GetTime();
+                allStates.tabTime = GetTime();
             }
         }
 
@@ -2756,7 +2768,7 @@ void LoadGame(const Font& font) {
     }
 
     // 11. 读档确认弹窗绘制：样式与存档一致，仅修改提示文字和点击逻辑
-    if (showLoadingConfirm && selectedLoadingIndex != -1 && GetTime() - tabTime > 0.1f)
+    if (allStates.showLoadingConfirm && allindex.selectedLoadingIndex != -1 && GetTime() - allStates.tabTime > 0.1f)
     {
         // 全屏半透遮罩，与存档一致
         DrawRectangle(0, 0, screenW, screenH, Fade(BLACK, 0.6f));
@@ -2801,21 +2813,21 @@ void LoadGame(const Font& font) {
             if (CheckCollisionPointRec(mousePos, btnYes))
             {
                 // ===================== 读档核心操作=====================
-                TraceLog(LOG_INFO, "***执行读档索引是%d", selectedLoadingIndex);
-                isLoading = true; // 标记为读档中，供你游戏逻辑判断加载状态
-                DoLoadGame(selectedLoadingIndex); // 你的读档核心函数：根据索引读取对应存档
+                TraceLog(LOG_INFO, "***执行读档索引是%d", allindex.selectedLoadingIndex);
+                allStates.isLoading = true; // 标记为读档中，供你游戏逻辑判断加载状态
+                DoLoadGame(allindex.selectedLoadingIndex); // 你的读档核心函数：根据索引读取对应存档
                 // ==================================================================================
                 PlaySound(allMusics.save);
-                showLoadingConfirm = false; // 关闭读档弹窗
-                selectedLoadingIndex = -1;  // 重置选中索引
-                isLoading = false;          // 读档完成后重置加载状态（可根据你的异步加载逻辑调整）
-                isInTab = false;
+                allStates.showLoadingConfirm = false; // 关闭读档弹窗
+                allindex.selectedLoadingIndex = -1;  // 重置选中索引
+                allStates.isLoading = false;          // 读档完成后重置加载状态（可根据你的异步加载逻辑调整）
+                allStates.isInTab = false;
             }
             else if (CheckCollisionPointRec(mousePos, btnNo))
             {
                 // 取消读档：仅关闭弹窗，不执行任何操作，与存档一致
-                showLoadingConfirm = false;
-                selectedLoadingIndex = -1;
+                allStates.showLoadingConfirm = false;
+                allindex.selectedLoadingIndex = -1;
             }
         }
     }
@@ -2850,7 +2862,7 @@ void DoLoadGame(int index) {
                 jArr[i].get_to(g_gameData.funitures[i]);
             }
         }
-        hasConfirmLoad = true;
+        allStates.hasConfirmLoad = true;
         is.close();
         TraceLog(LOG_INFO, "读档成功并完成局部合并: %s", path.c_str());
     }
@@ -3036,7 +3048,7 @@ std::vector<Vector2> FindPath(Vector2 startWorld, Vector2 goalWorld,
 // 新 UpdateMonsterAI（完全重写）
 void UpdateMonsterAI(Monster& monster, Player& player, tson::Layer* collisionLayer, int tw, int th) {
     if (!monster.active) return;
-	if (g_gameData.isInUi) return;
+	if (allStates.isInUi) return;
 
     float dt = GetFrameTime();
     Vector2 monsterPos = { monster.hitbox.x + monster.hitbox.width / 2.0f,
